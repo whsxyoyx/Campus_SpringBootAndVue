@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oyx.campus.mapper.AdminMapper">
+    <update id="updateByPrimaryKeySelective" parameterType="Admin">
+        update admin
+        <set>
+            <if test="account != null">
+                account = #{account},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="addtime != null">
+                addtime = #{addtime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where aid = #{aid}
+    </update>
+    <insert id="insertSelective" parameterType="Admin">
+        insert into admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="aid != null">
+                aid,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="addtime != null">
+                addtime,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="aid != null">
+                #{aid},
+            </if>
+            <if test="account != null">
+                #{account},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="addtime != null">
+                #{addtime},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+        </trim>
+    </insert>
+</mapper>

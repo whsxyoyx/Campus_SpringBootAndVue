@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oyx.campus.mapper.UserMapper">
+
+    <!--根据用户表中学校id查找学校名-->
+    <select id="getSchoolNameByStudentId" resultMap="UserWithSchoolResultMap">
+        select <include refid="UserWithSchoolSql"></include>
+        from user u left join school s
+        on u.schoolid=s.schoolid
+        where u.studentid=#{studentId}
+    </select>
+    <sql id="UserWithSchoolSql">
+        u.*, s.schoolid, s.name schoolName, s.addtime, s.state schoolState
+    </sql>
+    <resultMap id="UserWithSchoolResultMap" type="User">
+        <id column="stuid" jdbcType="INTEGER" property="stuid" />
+        <result column="studentid" jdbcType="VARCHAR" property="studentid" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="schoolid" jdbcType="INTEGER" property="schoolid" />
+        <result column="sex" jdbcType="INTEGER" property="sex" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="registertime" jdbcType="TIMESTAMP" property="registertime" />
+        <result column="money" jdbcType="DOUBLE" property="money" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="photo" jdbcType="VARCHAR" property="photo" />
+        <association property="school" javaType="School">
+            <id column="schoolid" jdbcType="INTEGER" property="schoolid" />
+            <result column="schoolName" jdbcType="VARCHAR" property="name" />
+            <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+            <result column="schoolState" jdbcType="INTEGER" property="state" />
+        </association>
+    </resultMap>
+
+    <delete id="deleteUserByIds" parameterType="Integer">
+        delete from `user`
+        where stuid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="insertSelective" parameterType="User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuid != null">
+                stuid,
+            </if>
+            <if test="studentid != null">
+                studentid,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="schoolid != null">
+                schoolid,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="registertime != null">
+                registertime,
+            </if>
+            <if test="money != null">
+                money,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="photo != null">
+                photo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuid != null">
+                #{stuid},
+            </if>
+            <if test="studentid != null">
+                #{studentid},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="schoolid != null">
+                #{schoolid},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="registertime != null">
+                #{registertime},
+            </if>
+            <if test="money != null">
+                #{money},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="photo != null">
+                #{photo},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="User">
+        update user
+        <set>
+            <if test="studentid != null">
+                studentid = #{studentid},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="schoolid != null">
+                schoolid = #{schoolid},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="registertime != null">
+                registertime = #{registertime},
+            </if>
+            <if test="money != null">
+                money = #{money},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="photo != null">
+                photo = #{photo},
+            </if>
+        </set>
+        where stuid = #{stuid}
+    </update>
+</mapper>

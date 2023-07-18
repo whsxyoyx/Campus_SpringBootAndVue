@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oyx.campus.mapper.TaskMapper">
+    <delete id="deleteTaskByIds" parameterType="Integer">
+        delete from `task`
+        where taskid in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectTaskByKeysNoState" resultType="Task">
+        SELECT t.* FROM task t LEFT JOIN `user` u ON t.publish_user_id = u.stuid
+        <where>
+            t.state=0
+            <if test="words!=null and words!=''">
+                and t.taskname like #{words}
+            </if>
+            <if test="schoolid!=null and schoolid!='-1'">
+                and u.schoolid = #{schoolid,jdbcType=INTEGER}
+            </if>
+        </where>
+
+        ORDER BY t.addtime DESC
+    </select>
+    <select id="selectTaskByKeys" resultType="Task">
+        SELECT t.* FROM task t LEFT JOIN `user` u ON t.publish_user_id = u.stuid
+        <where>
+            <if test="words!=null and words!=''">
+                and t.taskname like #{words}
+            </if>
+            <if test="schoolid!=null and schoolid!='-1'">
+                and u.schoolid = #{schoolid,jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY t.addtime DESC
+    </select>
+    <update id="updateByPrimaryKeySelective" parameterType="Task">
+        update task
+        <set>
+            <if test="publishUserId != null">
+                publish_user_id = #{publishUserId},
+            </if>
+            <if test="publishUserName != null">
+                publish_user_name = #{publishUserName},
+            </if>
+            <if test="publishSchoolId != null">
+                publish_school_id = #{publishSchoolId},
+            </if>
+            <if test="acceptUserId != null">
+                accept_user_id = #{acceptUserId},
+            </if>
+            <if test="reward != null">
+                reward = #{reward},
+            </if>
+            <if test="addtime != null">
+                addtime = #{addtime},
+            </if>
+            <if test="endtime != null">
+                endtime = #{endtime},
+            </if>
+            <if test="taskname != null">
+                taskname = #{taskname},
+            </if>
+            <if test="taskcontext != null">
+                taskcontext = #{taskcontext},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="tasktype != null">
+                taskType = #{tasktype},
+            </if>
+        </set>
+        where taskid = #{taskid}
+    </update>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oyx.campus.mapper.DailyMapper">
+    <delete id="deleteDailyByIds" parameterType="Integer">
+        delete from `daily`
+        where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="Daily">
+        update daily
+        <set>
+            <if test="gain != null">
+                gain = #{gain},
+            </if>
+            <if test="question != null">
+                question = #{question},
+            </if>
+            <if test="suggest != null">
+                suggest = #{suggest},
+            </if>
+            <if test="subtime != null">
+                subtime = #{subtime},
+            </if>
+            <if test="lastupdatetime != null">
+                lastupdatetime = #{lastupdatetime},
+            </if>
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <insert id="insertSelective" parameterType="Daily">
+        insert into daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gain != null">
+                gain,
+            </if>
+            <if test="question != null">
+                question,
+            </if>
+            <if test="suggest != null">
+                suggest,
+            </if>
+            <if test="subtime != null">
+                subtime,
+            </if>
+            <if test="lastupdatetime != null">
+                lastupdatetime,
+            </if>
+            <if test="sid != null">
+                sid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="gain != null">
+                #{gain},
+            </if>
+            <if test="question != null">
+                #{question},
+            </if>
+            <if test="suggest != null">
+                #{suggest},
+            </if>
+            <if test="subtime != null">
+                #{subtime},
+            </if>
+            <if test="lastupdatetime != null">
+                #{lastupdatetime},
+            </if>
+            <if test="sid != null">
+                #{sid},
+            </if>
+        </trim>
+    </insert>
+</mapper>

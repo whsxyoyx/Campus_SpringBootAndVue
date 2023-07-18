@@ -1,0 +1,45 @@
+server:
+  port: 8888
+  servlet:
+    #配置服务器访问路径
+    #http://localhost:8888/api/XXXXXX
+    context-path: /api
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        #开启REST风格的过滤器
+        enabled: true
+  config:
+    #导入db配置
+    import: conf/db.yml
+  servlet:
+    multipart:
+      #设置每个文件最大的大小
+      max-file-size: 3MB
+      #设置一次请求最大的文件大小
+      max-request-size: 10MB
+mybatis:
+  configuration:
+    #使用日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+  #配置mapper映射文件的位置
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.oyx.campus.bean
+
+#pageHelper相关配置
+pagehelper:
+  # 设置方言，此处指定 MySQL 数据库
+  helper-dialect: mysql
+  # 是否启动合理化，默认是 false。
+  # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。
+  # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true
+  # 是否支持接口参数来传递分页参数，默认false
+  support-methods-arguments: true
+  # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值
+  params: count=countSql
+  # 默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）
+  page-size-zero: true
