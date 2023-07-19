@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oyx.campus.mapper.TaskCommentMapper">
+
+    <select id="getCommentById" resultType="TaskComment">
+        select * from task_comment   where task_id=#{tid} order by updatetime desc
+    </select>
+    <!--一二级评论功能封装方式二，直接一个两表查询并且结果集映射即可-->
+    <resultMap id="MyCommentMap" type="com.oyx.campus.bean.TaskComment">
+        <id column="common_id" property="commonId"></id>
+        <result column="task_id" property="taskId"></result>
+        <result column="userName" property="username"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="img" property="img"></result>
+        <result column="content" property="content"></result>
+        <result column="parent_comment_id" property="parentCommentId"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="updatetime" property="updatetime"></result>
+        <collection property="children" ofType="ReplyComment">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="tid" jdbcType="BIGINT" property="taskId" />
+            <result column="con" jdbcType="VARCHAR" property="content" />
+            <result column="uname" jdbcType="VARCHAR" property="userName" />
+            <result column="ct" jdbcType="TIMESTAMP" property="createtime" />
+            <result column="reply_id" jdbcType="BIGINT" property="replyId" />
+            <result column="eimg" jdbcType="VARCHAR" property="img" />
+        </collection>
+    </resultMap>
+    <select id="getCommentByIdTest" resultMap="MyCommentMap">
+    select d.*,e.id,e.task_id as tid,e.content as con,e.user_name as uname,e.createtime as ct,e.reply_id,e.img eimg
+    from task_comment d left join reply_comment e on d.common_id=e.reply_id where d.task_id=#{tid}
+    </select>
+    <insert id="insertSelective" parameterType="TaskComment">
+        insert into task_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commonId != null">
+                common_id,
+            </if>
+            <if test="taskId != null">
+                task_id,
+            </if>
+            <if test="username != null">
+                userName,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="parentCommentId != null">
+                parent_comment_id,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="target != null">
+                target,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commonId != null">
+                #{commonId},
+            </if>
+            <if test="taskId != null">
+                #{taskId},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="img != null">
+                #{img},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="parentCommentId != null">
+                #{parentCommentId},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="target != null">
+                #{target},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>
