@@ -23,7 +23,7 @@ public interface UserService {
 	/**
 	 * 根据studentid返回user
 	 * @param studentid
-	 * @return
+	 * @return 返回的是一个user对象
 	 */
 	public User getUserByStudentid(String studentid);
 

@@ -97,10 +97,13 @@ public interface UserMapper {
     @ResultType(User.class)
     List<User> selectAllUser();
 
+    
 
-    /*
-    * 根据studentId查询学生信息
-    * */
+    /**
+     * 根据studentId查询学生信息
+     * @param studentId
+     * @return 返回的是一个user对象
+     */
     @Select("""
             select stuid, studentid, password, schoolid, sex, name, registertime, money, state, photo
             from `user`
