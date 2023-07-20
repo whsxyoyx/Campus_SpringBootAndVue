@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -38,7 +39,8 @@ public class UserController {
 	// 登录
 	@ResponseBody
 	@RequestMapping("/login")
-	public Msg login(String studentid, String password, Model model, HttpServletResponse response, HttpSession session ) {
+	public Msg login(String studentid, String password, Model model, HttpServletRequest req, HttpSession session ) {
+		System.out.println("------------>"+req.getRequestURI());
 		User user = null;
 		user = userService.getUserByStudentid(studentid);
 		if (user == null) {

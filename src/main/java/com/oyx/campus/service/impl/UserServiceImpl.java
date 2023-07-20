@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByStudentid(String studentid) {
 		User user = null;
-		User list= userMapper.selectByStudentId(studentid);
+		user= userMapper.selectByStudentId(studentid);
 		return user;
 	}
 
