@@ -10,6 +10,7 @@ public class PxCampusSpringBootApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PxCampusSpringBootApplication.class, args);
+        System.out.println("test");
     }
 
 }
